@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PIB Calculator | SNOWTEX Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --navy:#1B2A47;--red:#C8102E;--red-light:#F5E6E9;
+  --bg:#F5F6F8;--card:#FFF;--border:#E2E6ED;
+  --text:#1B2A47;--muted:#6B7A99;
+  --green:#0E7C50;--green-light:#E6F5EF;
+  --amber:#B45309;--amber-light:#FEF3C7;
+  --shadow:0 1px 3px rgba(27,42,71,.07),0 6px 20px rgba(27,42,71,.08);
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;}
+
+.topbar{background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(27,42,71,.25);}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.logo-wrap{height:36px;display:flex;align-items:center;}
+.logo-img{height:36px;width:auto;display:block;}
+.logo-text{color:#fff;font-weight:800;font-size:18px;letter-spacing:.5px;}
+.topbar-sep{width:1px;height:28px;background:rgba(255,255,255,.2);}
+.topbar-sub{color:rgba(255,255,255,.65);font-size:12px;font-weight:600;letter-spacing:.3px;}
+.topbar-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+
+.page{padding:20px 16px;}
+@media(min-width:700px){.page{padding:28px;max-width:1100px;margin:0 auto;}}
+
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.sec-bar{width:4px;height:18px;background:var(--red);border-radius:2px;}
+.sec-title{font-size:13px;font-weight:700;color:var(--navy);letter-spacing:.5px;text-transform:uppercase;}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);}
+.input-card{padding:22px 20px;margin-bottom:20px;}
+
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(min-width:700px){.grid4{grid-template-columns:1fr 1fr 1fr 1fr;}}
+
+.field-label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;}
+.opt-tag{font-size:8px;font-weight:600;background:#EEF1F7;color:#94a3b8;border-radius:3px;padding:1px 5px;margin-left:4px;text-transform:none;letter-spacing:0;vertical-align:middle;}
+.field input,.field select{width:100%;background:#F8F9FB;border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 12px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
+.field input:focus,.field select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,71,.1);background:#fff;}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7A99' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+.field-opt input{border-style:dashed;}
+.field-opt input:focus{border-style:solid;}
+
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
+.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p-navy{background:#EEF1F7;color:var(--navy);border:1px solid #C5CFDF;}
+.p-red{background:var(--red-light);color:var(--red);border:1px solid #F0B8C2;}
+.p-green{background:var(--green-light);color:var(--green);border:1px solid #B3DCCB;}
+.p-amber{background:var(--amber-light);color:var(--amber);border:1px solid #FDE68A;}
+.p-slate{background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;}
+
+.gen-btn{width:100%;margin-top:16px;padding:15px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(200,16,46,.3);transition:background .15s;-webkit-tap-highlight-color:transparent;}
+.gen-btn:hover{background:#a50d26;}
+.gen-btn:active{background:#8b0b21;}
+
+.result-bar{background:var(--navy);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;color:#fff;}
+.result-title{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:4px;}
+.result-meta{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;line-height:1.7;}
+
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.pdf-btn{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 16px;background:#fff;color:var(--navy);border:1.5px solid var(--border);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pdf-btn:hover{border-color:var(--navy);}
+.rst-btn{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 16px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.rst-btn:hover{background:#253a5e;}
+
+.note{background:#EEF1F7;border:1px solid #C5CFDF;border-left:4px solid var(--navy);border-radius:10px;padding:12px 14px;font-size:11px;color:var(--navy);font-weight:500;margin-bottom:16px;line-height:1.7;}
+
+.sum-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px;}
+@media(min-width:480px){.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}}
+.sum-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.sum-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.sc-r::before{background:var(--red);}
+.sc-g::before{background:var(--green);}
+.sc-n::before{background:var(--navy);}
+@media(max-width:479px){
+  .sum-card{display:flex;align-items:center;justify-content:space-between;}
+  .sum-card::before{width:4px;height:100%;top:0;right:auto;}
+  .sum-left{padding-left:6px;}
+}
+.sum-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;}
+.sum-sub{font-size:10px;font-weight:600;margin-bottom:3px;}
+.sum-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;line-height:1;}
+.sum-note{font-size:9px;color:var(--muted);margin-top:3px;}
+.sc-r .sum-val,.sc-r .sum-sub{color:var(--red);}
+.sc-g .sum-val,.sc-g .sum-sub{color:var(--green);}
+.sc-n .sum-val,.sc-n .sum-sub{color:var(--navy);}
+
+.tbl-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;min-width:560px;}
+thead tr{background:var(--navy);}
+th{padding:12px 14px;text-align:right;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;}
+th:first-child{text-align:center;}
+td{padding:13px 14px;text-align:right;border-bottom:1px solid #F0F2F6;font-size:12px;font-weight:600;white-space:nowrap;color:var(--text);}
+td:first-child{text-align:center;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#F8F9FB;}
+.dbadge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;background:#EEF1F7;color:var(--navy);font-size:12px;font-weight:800;border:1px solid #C5CFDF;}
+.dbadge.ext{background:var(--green-light);color:var(--green);border-color:#B3DCCB;}
+.ecell{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6d28d9;}
+.p70{color:var(--red);font-family:'JetBrains Mono',monospace;}
+.p100{color:var(--green);font-family:'JetBrains Mono',monospace;}
+.p120{color:var(--navy);font-family:'JetBrains Mono',monospace;font-weight:700;}
+.th70{color:#ffb3be!important;}
+.th100{color:#86efcf!important;}
+.th120{color:#bfcfff!important;}
+.cbadge{font-size:8px;font-weight:700;background:var(--amber-light);color:var(--amber);border:1px solid #FDE68A;padding:1px 5px;border-radius:3px;margin-left:4px;}
+.xbadge{font-size:8px;font-weight:700;background:var(--green-light);color:var(--green);border:1px solid #B3DCCB;padding:1px 5px;border-radius:3px;margin-left:4px;}
+.tot-row td{background:#EEF1F7;border-top:2px solid var(--border);border-bottom:none;font-weight:800;font-size:13px;padding:14px;}
+.tot-row td:first-child{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;}
+
+.mob-cards{display:none;}
+@media(max-width:600px){.tbl-card{display:none;}.mob-cards{display:block;}}
+.dc{background:var(--card);border-radius:12px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(27,42,71,.06);margin-bottom:10px;overflow:hidden;}
+.dc-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#F8F9FB;border-bottom:1px solid var(--border);}
+.dc-left{display:flex;align-items:center;gap:9px;}
+.dc-badge{width:28px;height:28px;border-radius:7px;background:#EEF1F7;color:var(--navy);font-size:12px;font-weight:800;border:1px solid #C5CFDF;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dc-badge.ext{background:var(--green-light);color:var(--green);border-color:#B3DCCB;}
+.dc-name{font-size:12px;font-weight:700;color:var(--text);}
+.dc-eff{font-family:'JetBrains Mono',monospace;font-size:10px;color:#6d28d9;margin-top:1px;}
+.dc-lt{font-size:11px;color:var(--muted);font-weight:600;}
+.dc-body{display:grid;grid-template-columns:1fr 1fr 1fr;}
+.pc{padding:13px 8px;text-align:center;border-right:1px solid #F0F2F6;}
+.pc:last-child{border-right:none;}
+.pc-rate{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;}
+.pc-amt{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;}
+.pc-unit{font-size:9px;color:var(--muted);margin-top:2px;}
+.r70 .pc-rate,.r70 .pc-amt{color:var(--red);}
+.r100 .pc-rate,.r100 .pc-amt{color:var(--green);}
+.r120 .pc-rate,.r120 .pc-amt{color:var(--navy);}
+.mob-total{background:var(--navy);border-radius:12px;padding:16px;margin-bottom:10px;}
+.mt-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;}
+.mt-item .mt-rate{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;color:rgba(255,255,255,.6);}
+.mt-item .mt-val{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;}
+.mt-item .mt-unit{font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;}
+.mt-item.mr .mt-val{color:#ffb3be;}
+.mt-item.mg .mt-val{color:#86efcf;}
+.mt-item.mn .mt-val{color:#bfdbfe;}
+
+.footer{text-align:center;padding:20px 16px 10px;}
+.footer-in{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:11px;color:var(--muted);font-weight:600;}
+.fdot{width:5px;height:5px;background:var(--red);border-radius:50%;}
+
+#resultSection{display:none;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .topbar,.input-card,.action-row,.footer,.mob-cards{display:none!important;}
+  .tbl-card{display:block!important;}
+  .page{padding:12px;}
+  .result-bar{background:#1B2A47!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .sum-card{box-shadow:none;border:1px solid #ccc;}
+  .sum-card::before{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .sc-r .sum-val,.sc-r .sum-sub,.sc-g .sum-val,.sc-g .sum-sub,.sc-n .sum-val,.sc-n .sum-sub{color:#000!important;}
+  .p70,.p100,.p120,.ecell{color:#000!important;}
+  .dbadge{background:#eee!important;color:#000!important;border-color:#ccc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .tot-row td{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .note{background:#f5f5f5!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .cbadge,.xbadge{background:#eee!important;color:#000!important;border-color:#ccc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead tr{background:#1B2A47!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  #resultSection{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo-wrap">
+      <img class="logo-img" src="https://snowtex.com.bd/_next/static/media/logo.7e7b8975.svg" alt="SNOWTEX" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+      <span class="logo-text" style="display:none">SNOWTEX</span>
+    </div>
+    <div class="topbar-sep"></div>
+    <span class="topbar-sub">PIB Calculator</span>
+  </div>
+  <span class="topbar-badge">Sewing Line | Layout Period</span>
+</div>
+
+<div class="page">
+
+  <div class="card input-card" id="inputSection">
+    <div class="sec-head"><div class="sec-bar"></div><span class="sec-title">Input Parameters</span></div>
+    <div class="grid4">
+      <div class="field">
+        <label class="field-label">SMV</label>
+        <input type="number" id="smvIn" min="0.01" step="0.01" placeholder="e.g. 42" inputmode="decimal" oninput="onChg()">
+      </div>
+      <div class="field">
+        <label class="field-label">Buyer Type</label>
+        <select id="buyerType" onchange="onChg()">
+          <option value="">Select</option>
+          <option value="normal">Normal Buyer</option>
+          <option value="special">Special Buyer</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Style Type</label>
+        <select id="styleType" onchange="onChg()">
+          <option value="">Select</option>
+          <option value="new">New</option>
+          <option value="repeat">Repeat</option>
+        </select>
+      </div>
+      <div class="field field-opt">
+        <label class="field-label">Total Days <span class="opt-tag">optional</span></label>
+        <input type="number" id="totalDays" min="1" max="30" step="1" placeholder="e.g. 10" inputmode="numeric" oninput="onChg()">
+      </div>
+    </div>
+    <div class="pills" id="pills" style="display:none">
+      <span class="pill p-navy" id="pSMV"></span>
+      <span class="pill p-navy" id="pLC"></span>
+      <span class="pill p-red"  id="pBuyer"></span>
+      <span class="pill p-green" id="pStyle"></span>
+      <span class="pill p-amber" id="pMax"></span>
+      <span class="pill p-slate" id="pDays" style="display:none"></span>
+    </div>
+    <button class="gen-btn" onclick="generate()">&#9654; &nbsp;Generate PIB Report</button>
+  </div>
+
+  <div id="resultSection">
+
+    <div class="result-bar">
+      <div class="result-title" id="rTitle"></div>
+      <div class="result-meta" id="rMeta"></div>
+    </div>
+
+    <div class="action-row">
+      <button class="pdf-btn" id="pdfBtn" onclick="dlPDF()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h4a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Download PDF
+      </button>
+      <button class="rst-btn" onclick="reset()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+        New Calculation
+      </button>
+    </div>
+
+    <div class="note" id="note"></div>
+
+    <div class="sum-grid">
+      <div class="sum-card sc-r">
+        <div class="sum-left"><div class="sum-label">Hit Rate 70%</div><div class="sum-sub">Min Payout</div></div>
+        <div class="sum-right"><div class="sum-val" id="t70">--</div><div class="sum-note" id="s70">Total Taka</div></div>
+      </div>
+      <div class="sum-card sc-g">
+        <div class="sum-left"><div class="sum-label">Hit Rate 100%</div><div class="sum-sub">Target Payout</div></div>
+        <div class="sum-right"><div class="sum-val" id="t100">--</div><div class="sum-note" id="s100">Total Taka</div></div>
+      </div>
+      <div class="sum-card sc-n">
+        <div class="sum-left"><div class="sum-label">Hit Rate 120%</div><div class="sum-sub">Max Payout</div></div>
+        <div class="sum-right"><div class="sum-val" id="t120">--</div><div class="sum-note" id="s120">Total Taka</div></div>
+      </div>
+    </div>
+
+    <div class="tbl-card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Line Target</th>
+              <th>Operator Target</th>
+              <th class="th70">PIB @ 70%</th>
+              <th class="th100">PIB @ 100%</th>
+              <th class="th120">PIB @ 120%</th>
+            </tr>
+          </thead>
+          <tbody id="tBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mob-cards" id="mobCards"></div>
+
+  </div>
+</div>
+
+<div class="footer"><div class="footer-in"><div class="fdot"></div>&copy; Snowtex CI Team<div class="fdot"></div></div></div>
+
+<script>
+var LCT=[[40.99,4,3],[65.99,5,4],[90.99,6,5],[1000,7,6]];
+var SPT={
+  3:[30,60,65,65,65,65,65,65,65,65],
+  4:[20,40,55,65,65,65,65,65,65,65],
+  5:[20,25,50,60,65,65,65,65,65,65],
+  6:[15,25,35,45,65,65,65,65,65,65],
+  7:[15,25,35,45,55,60,65,65,65,65]
+};
+var NMT={
+  3:[30,60,75,75,75,75,75,75,75,75],
+  4:[25,45,65,75,75,75,75,75,75,75],
+  5:[20,40,55,65,75,75,75,75,75,75],
+  6:[20,40,55,65,70,75,75,75,75,75],
+  7:[15,25,35,50,65,70,75,75,75,75]
+};
+
+function getLC(smv){
+  for(var i=0;i<LCT.length;i++) if(smv<=LCT[i][0]) return {n:LCT[i][1],r:LCT[i][2]};
+  return {n:7,r:6};
+}
+function range(smv){
+  if(smv<=40.99) return '0-40.99';
+  if(smv<=65.99) return '41-65.99';
+  if(smv<=90.99) return '66-90.99';
+  return '91-1000';
+}
+function pib(c){
+  if(c<25)c=25; if(c>75)c=75;
+  var p=20+(c-25)*0.6;
+  return {a70:+(p*0.7).toFixed(2), a100:+p.toFixed(2), a120:+(p*1.2).toFixed(2)};
+}
+function $$(id){return document.getElementById(id);}
+
+function onChg(){
+  var smv=parseFloat($$('smvIn').value);
+  var bt=$$('buyerType').value;
+  var st=$$('styleType').value;
+  var td=parseInt($$('totalDays').value);
+  if(!smv||smv<=0||!bt||!st){$$('pills').style.display='none';return;}
+  var lc=getLC(smv);
+  var days=st==='new'?lc.n:lc.r;
+  $$('pSMV').textContent='SMV: '+smv+' ('+range(smv)+')';
+  $$('pLC').textContent='LC: '+days+' days';
+  $$('pBuyer').textContent=bt==='special'?'Special Buyer':'Normal Buyer';
+  $$('pStyle').textContent=st==='new'?'New':'Repeat';
+  $$('pMax').textContent='Max Eff: '+(bt==='special'?'65%':'75%');
+  var pd=$$('pDays');
+  if(td>0&&td>days){pd.textContent='Total: '+td+' days (+' +(td-days)+' ext)';pd.style.display='inline-flex';}
+  else{pd.style.display='none';}
+  $$('pills').style.display='flex';
+}
+
+function generate(){
+  var smv=parseFloat($$('smvIn').value);
+  var bt=$$('buyerType').value;
+  var st=$$('styleType').value;
+  var tdRaw=$$('totalDays').value;
+  var td=tdRaw?parseInt(tdRaw):0;
+
+  if(!smv||smv<=0){alert('Please enter a valid SMV.');return;}
+  if(!bt){alert('Please select Buyer Type.');return;}
+  if(!st){alert('Please select Style Type.');return;}
+
+  var lc=getLC(smv);
+  var lcDays=st==='new'?lc.n:lc.r;
+  var effRow=(bt==='special'?SPT:NMT)[lcDays];
+  var maxLT=effRow[lcDays-1];
+  var showDays=(td>lcDays)?td:lcDays;
+  var hasExt=(showDays>lcDays);
+
+  var rows=[],s70=0,s100=0,s120=0;
+  for(var d=1;d<=showDays;d++){
+    var lt=(d<=lcDays)?effRow[d-1]:maxLT;
+    var isExt=(d>lcDays);
+    var comb=(lt+10>75)?75:(lt+10);
+    var isCap=(lt>=75);
+    var v=pib(comb);
+    s70+=v.a70; s100+=v.a100; s120+=v.a120;
+    rows.push({day:d,lt:lt,comb:comb,isCap:isCap,isExt:isExt,a70:v.a70,a100:v.a100,a120:v.a120});
+  }
+
+  $$('rTitle').textContent='SMV '+smv+' | '+(bt==='special'?'Special':'Normal')+' Buyer | '+(st==='new'?'New':'Repeat')+' Style';
+  var meta='Learning Curve: '+lcDays+' Days';
+  if(hasExt) meta+=' | Total: '+showDays+' Days (LC '+lcDays+' + Ext '+(showDays-lcDays)+')';
+  meta+=' | SMV Range: '+range(smv)+' | Ref: '+(bt==='special'?'Table 02':'Table 03')+' | Policy: 27 Apr 2026';
+  $$('rMeta').textContent=meta;
+
+  $$('note').innerHTML='<strong>PIB Rule:</strong> Hit Rate 70% min to 120% max. Op. Target = Line Target + 10% (max 75%). '+'<strong>PIB(100%) = 20 + (Op.Target% - 25) x 0.60 tk</strong>'+(hasExt?' | Extended days use max eff '+maxLT+'%.':'');
+
+  var sub='Total Taka ('+showDays+' Days)';
+  $$('t70').textContent=s70.toFixed(2)+' tk';
+  $$('t100').textContent=s100.toFixed(2)+' tk';
+  $$('t120').textContent=s120.toFixed(2)+' tk';
+  $$('s70').textContent=sub; $$('s100').textContent=sub; $$('s120').textContent=sub;
+
+  var tbody=$$('tBody');
+  tbody.innerHTML='';
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];
+    var eLabel=r.isCap?(r.lt+'% <span class="cbadge">CAP</span>'):(r.lt+'%+10%='+r.comb+'%');
+    if(r.isExt) eLabel+=' <span class="xbadge">EXT</span>';
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><span class="dbadge'+(r.isExt?' ext':'')+'">'+r.day+'</span></td>'+
+      '<td>'+r.lt+'%</td>'+
+      '<td class="ecell">'+eLabel+'</td>'+
+      '<td class="p70">'+r.a70.toFixed(2)+' tk</td>'+
+      '<td class="p100">'+r.a100.toFixed(2)+' tk</td>'+
+      '<td class="p120">'+r.a120.toFixed(2)+' tk</td>';
+    tbody.appendChild(tr);
+  }
+  var ttr=document.createElement('tr');
+  ttr.className='tot-row';
+  var totalLabel='TOTAL ('+showDays+' DAYS'+(hasExt?' | LC '+lcDays+' + EXT '+(showDays-lcDays):'')+')';
+  ttr.innerHTML='<td colspan="3">'+totalLabel+'</td>'+
+    '<td class="p70">'+s70.toFixed(2)+' tk</td>'+
+    '<td class="p100">'+s100.toFixed(2)+' tk</td>'+
+    '<td class="p120">'+s120.toFixed(2)+' tk</td>';
+  tbody.appendChild(ttr);
+
+  var mc=$$('mobCards');
+  mc.innerHTML='';
+  for(var j=0;j<rows.length;j++){
+    var r=rows[j];
+    var eL=r.isCap?(r.lt+'% <span class="cbadge">CAP</span>'):(r.lt+'% + 10% = '+r.comb+'%');
+    if(r.isExt) eL+=' <span class="xbadge">EXT</span>';
+    var div=document.createElement('div');
+    div.className='dc';
+    div.innerHTML=
+      '<div class="dc-head">'+
+        '<div class="dc-left">'+
+          '<span class="dc-badge'+(r.isExt?' ext':'')+'">'+r.day+'</span>'+
+          '<div><div class="dc-name">Day '+r.day+(r.isExt?' <span class="xbadge">EXT</span>':'')+'</div>'+
+          '<div class="dc-eff">'+eL+'</div></div>'+
+        '</div>'+
+        '<div class="dc-lt">Line: '+r.lt+'%</div>'+
+      '</div>'+
+      '<div class="dc-body">'+
+        '<div class="pc r70"><div class="pc-rate">70%</div><div class="pc-amt">'+r.a70.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
+        '<div class="pc r100"><div class="pc-rate">100%</div><div class="pc-amt">'+r.a100.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
+        '<div class="pc r120"><div class="pc-rate">120%</div><div class="pc-amt">'+r.a120.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
+      '</div>';
+    mc.appendChild(div);
+  }
+
+  var totDiv=document.createElement('div');
+  totDiv.className='mob-total';
+  var totLbl='TOTAL | '+showDays+' Days'+(hasExt?' (LC '+lcDays+' + EXT '+(showDays-lcDays)+')':'');
+  totDiv.innerHTML=
+    '<div class="mt-label">'+totLbl+'</div>'+
+    '<div class="mt-grid">'+
+      '<div class="mt-item mr"><div class="mt-rate">70%</div><div class="mt-val">'+s70.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
+      '<div class="mt-item mg"><div class="mt-rate">100%</div><div class="mt-val">'+s100.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
+      '<div class="mt-item mn"><div class="mt-rate">120%</div><div class="mt-val">'+s120.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
+    '</div>';
+  mc.appendChild(totDiv);
+
+  $$('resultSection').style.display='block';
+  setTimeout(function(){$$('resultSection').scrollIntoView({behavior:'smooth',block:'start'});},80);
+}
+
+function reset(){
+  ['smvIn','buyerType','styleType','totalDays'].forEach(function(id){$$(id).value='';});
+  $$('pills').style.display='none';
+  $$('resultSection').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function dlPDF(){
+  var btn=$$('pdfBtn');
+  btn.textContent='Generating...';
+  btn.disabled=true;
+
+  var actionRow=document.querySelector('.action-row');
+  var inputSec=$$('inputSection');
+  var footer=document.querySelector('.footer');
+  var topbar=document.querySelector('.topbar');
+  var tblCard=document.querySelector('.tbl-card');
+  var mobCards=$$('mobCards');
+
+  actionRow.style.display='none';
+  inputSec.style.display='none';
+  footer.style.display='none';
+  topbar.style.display='none';
+  tblCard.style.display='block';
+  mobCards.style.display='none';
+
+  var st=document.createElement('style');
+  st.textContent=[
+    'body{background:#fff!important;}',
+    '.p70,.p100,.p120,.ecell{color:#000!important;}',
+    '.sc-r .sum-val,.sc-r .sum-sub,.sc-g .sum-val,.sc-g .sum-sub,.sc-n .sum-val,.sc-n .sum-sub{color:#000!important;}',
+    '.sum-card{border:1px solid #ccc!important;box-shadow:none!important;}',
+    '.dbadge{background:#eee!important;color:#000!important;border-color:#ccc!important;}',
+    '.tot-row td{background:#eee!important;}',
+    '.note{background:#f5f5f5!important;color:#000!important;border-left-color:#000!important;}',
+    '.cbadge,.xbadge{background:#eee!important;color:#000!important;border-color:#ccc!important;}',
+    '.tbl-card{box-shadow:none!important;border:1px solid #ccc!important;}',
+    'thead tr{background:#1B2A47!important;}',
+    '.result-bar{background:#1B2A47!important;}'
+  ].join('');
+  document.head.appendChild(st);
+
+  var sec=$$('resultSection');
+  html2canvas(sec,{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:960}).then(function(canvas){
+    document.head.removeChild(st);
+    actionRow.style.display='flex';
+    inputSec.style.display='block';
+    footer.style.display='block';
+    topbar.style.display='flex';
+    tblCard.style.display='';
+    mobCards.style.display='';
+
+    var img=canvas.toDataURL('image/png');
+    var pdf=new jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var pW=210,pH=297,mg=10,uw=pW-mg*2;
+    var rat=uw/(canvas.width*0.264583);
+    var sh=canvas.height*0.264583*rat;
+    if(sh>pH-mg*2){rat=(pH-mg*2)/(canvas.height*0.264583);var sw=canvas.width*0.264583*rat;pdf.addImage(img,'PNG',(pW-sw)/2,mg,sw,pH-mg*2);}
+    else{pdf.addImage(img,'PNG',mg,mg,uw,sh);}
+    pdf.setFontSize(7);pdf.setTextColor(130);
+    pdf.text('SNOWTEX GROUP | PIB Calculator | Policy: 27 April 2026 | (c) Snowtex CI Team',mg,pH-4);
+    pdf.text('Generated: '+new Date().toLocaleString(),pW-mg,pH-4,{align:'right'});
+    pdf.save('PIB_Report_SNOWTEX.pdf');
+    btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h4a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Download PDF';
+    btn.disabled=false;
+  }).catch(function(e){
+    document.head.removeChild(st);
+    actionRow.style.display='flex';
+    inputSec.style.display='block';
+    footer.style.display='block';
+    topbar.style.display='flex';
+    tblCard.style.display='';
+    mobCards.style.display='';
+    btn.textContent='Download PDF';btn.disabled=false;
+  });
+}
+</script>
+</body>
+</html>
