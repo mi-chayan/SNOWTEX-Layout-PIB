@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>PIB Calculator | SNOWTEX Group</title>
+<title>Layout PIB Calculator | SNOWTEX Group</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
   --navy:#1B2A47;--red:#C8102E;--red-light:#F5E6E9;
-  --bg:#F5F6F8;--card:#FFF;--border:#E2E6ED;
+  --bg:#F0F2F5;--card:#FFF;--border:#E2E6ED;
   --text:#1B2A47;--muted:#6B7A99;
   --green:#0E7C50;--green-light:#E6F5EF;
   --amber:#B45309;--amber-light:#FEF3C7;
@@ -21,6 +21,7 @@
 html{-webkit-text-size-adjust:100%;}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;}
 
+/* TOPBAR */
 .topbar{background:var(--navy);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(27,42,71,.25);}
 .topbar-left{display:flex;align-items:center;gap:14px;}
 .logo-wrap{height:36px;display:flex;align-items:center;}
@@ -37,12 +38,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sec-bar{width:4px;height:18px;background:var(--red);border-radius:2px;}
 .sec-title{font-size:13px;font-weight:700;color:var(--navy);letter-spacing:.5px;text-transform:uppercase;}
 
+/* INPUT CARD */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);}
 .input-card{padding:22px 20px;margin-bottom:20px;}
-
 .grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(min-width:700px){.grid4{grid-template-columns:1fr 1fr 1fr 1fr;}}
-
 .field-label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;}
 .opt-tag{font-size:8px;font-weight:600;background:#EEF1F7;color:#94a3b8;border-radius:3px;padding:1px 5px;margin-left:4px;text-transform:none;letter-spacing:0;vertical-align:middle;}
 .field input,.field select{width:100%;background:#F8F9FB;border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;padding:13px 12px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
@@ -51,6 +51,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .field-opt input{border-style:dashed;}
 .field-opt input:focus{border-style:solid;}
 
+/* PILLS */
 .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
 .pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;}
 .p-navy{background:#EEF1F7;color:var(--navy);border:1px solid #C5CFDF;}
@@ -59,42 +60,48 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .p-amber{background:var(--amber-light);color:var(--amber);border:1px solid #FDE68A;}
 .p-slate{background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;}
 
+/* GENERATE BUTTON */
 .gen-btn{width:100%;margin-top:16px;padding:15px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(200,16,46,.3);transition:background .15s;-webkit-tap-highlight-color:transparent;}
 .gen-btn:hover{background:#a50d26;}
 .gen-btn:active{background:#8b0b21;}
 
+/* RESULT BAR */
 .result-bar{background:var(--navy);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;color:#fff;}
 .result-title{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:4px;}
 .result-meta{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;line-height:1.7;}
 
+/* ACTION BUTTONS */
 .action-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
 .pdf-btn{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 16px;background:#fff;color:var(--navy);border:1.5px solid var(--border);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .pdf-btn:hover{border-color:var(--navy);}
 .rst-btn{flex:1;min-width:120px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 16px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .rst-btn:hover{background:#253a5e;}
 
+/* NOTE */
 .note{background:#EEF1F7;border:1px solid #C5CFDF;border-left:4px solid var(--navy);border-radius:10px;padding:12px 14px;font-size:11px;color:var(--navy);font-weight:500;margin-bottom:16px;line-height:1.7;}
 
-.sum-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px;}
-@media(min-width:480px){.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}}
-.sum-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;}
+/* SUMMARY CARDS */
+.sum-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:20px;}
+@media(min-width:480px){.sum-grid{grid-template-columns:repeat(3,1fr);gap:12px;}}
+.sum-card{background:var(--card);border-radius:12px;padding:18px 16px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;}
 .sum-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
 .sc-r::before{background:var(--red);}
 .sc-g::before{background:var(--green);}
 .sc-n::before{background:var(--navy);}
 @media(max-width:479px){
-  .sum-card{display:flex;align-items:center;justify-content:space-between;}
+  .sum-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;}
   .sum-card::before{width:4px;height:100%;top:0;right:auto;}
-  .sum-left{padding-left:6px;}
+  .sum-left{padding-left:8px;}
 }
-.sum-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;}
-.sum-sub{font-size:10px;font-weight:600;margin-bottom:3px;}
-.sum-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;line-height:1;}
-.sum-note{font-size:9px;color:var(--muted);margin-top:3px;}
+.sum-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;}
+.sum-sub{font-size:11px;font-weight:600;margin-bottom:4px;}
+.sum-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;line-height:1;}
+.sum-note{font-size:9px;color:var(--muted);margin-top:4px;}
 .sc-r .sum-val,.sc-r .sum-sub{color:var(--red);}
 .sc-g .sum-val,.sc-g .sum-sub{color:var(--green);}
 .sc-n .sum-val,.sc-n .sum-sub{color:var(--navy);}
 
+/* DESKTOP TABLE */
 .tbl-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
 .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 table{width:100%;border-collapse:collapse;min-width:560px;}
@@ -119,41 +126,120 @@ tbody tr:hover td{background:#F8F9FB;}
 .tot-row td{background:#EEF1F7;border-top:2px solid var(--border);border-bottom:none;font-weight:800;font-size:13px;padding:14px;}
 .tot-row td:first-child{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;}
 
+/* ── MOBILE DAY CARDS - fully redesigned ── */
 .mob-cards{display:none;}
 @media(max-width:600px){.tbl-card{display:none;}.mob-cards{display:block;}}
-.dc{background:var(--card);border-radius:12px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(27,42,71,.06);margin-bottom:10px;overflow:hidden;}
-.dc-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#F8F9FB;border-bottom:1px solid var(--border);}
-.dc-left{display:flex;align-items:center;gap:9px;}
-.dc-badge{width:28px;height:28px;border-radius:7px;background:#EEF1F7;color:var(--navy);font-size:12px;font-weight:800;border:1px solid #C5CFDF;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.dc-badge.ext{background:var(--green-light);color:var(--green);border-color:#B3DCCB;}
-.dc-name{font-size:12px;font-weight:700;color:var(--text);}
-.dc-eff{font-family:'JetBrains Mono',monospace;font-size:10px;color:#6d28d9;margin-top:1px;}
-.dc-lt{font-size:11px;color:var(--muted);font-weight:600;}
-.dc-body{display:grid;grid-template-columns:1fr 1fr 1fr;}
-.pc{padding:13px 8px;text-align:center;border-right:1px solid #F0F2F6;}
-.pc:last-child{border-right:none;}
-.pc-rate{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;}
-.pc-amt{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;}
-.pc-unit{font-size:9px;color:var(--muted);margin-top:2px;}
-.r70 .pc-rate,.r70 .pc-amt{color:var(--red);}
-.r100 .pc-rate,.r100 .pc-amt{color:var(--green);}
-.r120 .pc-rate,.r120 .pc-amt{color:var(--navy);}
-.mob-total{background:var(--navy);border-radius:12px;padding:16px;margin-bottom:10px;}
-.mt-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;}
-.mt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;}
-.mt-item .mt-rate{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;color:rgba(255,255,255,.6);}
-.mt-item .mt-val{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;}
-.mt-item .mt-unit{font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;}
-.mt-item.mr .mt-val{color:#ffb3be;}
-.mt-item.mg .mt-val{color:#86efcf;}
-.mt-item.mn .mt-val{color:#bfdbfe;}
 
+.dc{
+  background:var(--card);
+  border-radius:16px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 8px rgba(27,42,71,.08);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+.dc.is-ext{border-left:4px solid var(--green);}
+.dc.is-cap{border-left:4px solid var(--amber);}
+
+/* Day card top header - day number + status */
+.dc-top{
+  background:var(--navy);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.dc-top-left{display:flex;align-items:center;gap:10px;}
+.dc-daynum{
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,.15);
+  color:#fff;font-size:15px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.25);
+  flex-shrink:0;
+}
+.dc-daynum.ext{background:rgba(14,124,80,.4);border-color:rgba(14,124,80,.6);}
+.dc-daylabel{color:#fff;font-size:14px;font-weight:800;}
+.dc-daystatus{display:flex;gap:5px;align-items:center;margin-top:2px;}
+.dc-badge-ext{font-size:9px;font-weight:700;background:rgba(14,124,80,.3);color:#86efcf;border:1px solid rgba(14,124,80,.4);padding:2px 7px;border-radius:10px;}
+.dc-badge-cap{font-size:9px;font-weight:700;background:rgba(180,83,9,.3);color:#fcd34d;border:1px solid rgba(180,83,9,.4);padding:2px 7px;border-radius:10px;}
+
+/* Efficiency row */
+.dc-eff-row{
+  background:#F8F9FB;
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.dc-eff-item{}
+.dc-eff-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:3px;}
+.dc-eff-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--navy);}
+.dc-eff-val.purple{color:#6d28d9;}
+
+/* PIB amounts - 3 equal columns */
+.dc-pib-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+}
+.dc-pib-cell{
+  padding:14px 10px;
+  text-align:center;
+  border-right:1px solid #F0F2F6;
+}
+.dc-pib-cell:last-child{border-right:none;}
+.dc-pib-hr-label{
+  font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:3px;
+}
+.dc-pib-hr-desc{
+  font-size:8px;color:var(--muted);margin-bottom:8px;font-weight:500;
+}
+.dc-pib-amount{
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;font-weight:800;line-height:1;
+}
+.dc-pib-unit{font-size:9px;color:var(--muted);margin-top:3px;font-weight:500;}
+.cell-70 .dc-pib-hr-label{color:var(--red);}
+.cell-70 .dc-pib-amount{color:var(--red);}
+.cell-100 .dc-pib-hr-label{color:var(--green);}
+.cell-100 .dc-pib-amount{color:var(--green);}
+.cell-120 .dc-pib-hr-label{color:var(--navy);}
+.cell-120 .dc-pib-amount{color:var(--navy);}
+
+/* MOBILE TOTAL CARD */
+.mob-total{
+  background:var(--navy);border-radius:16px;
+  padding:18px 16px;margin-bottom:14px;
+  border:2px solid rgba(255,255,255,.08);
+}
+.mt-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.mt-title{font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px;text-transform:uppercase;}
+.mt-days-badge{font-size:10px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 10px;border-radius:20px;}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.mt-cell{
+  text-align:center;padding:12px 6px;
+  background:rgba(255,255,255,.06);border-radius:10px;
+}
+.mt-cell:nth-child(2){margin:0 4px;}
+.mt-hr-label{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.mt-hr-desc{font-size:8px;margin-bottom:8px;}
+.mt-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;line-height:1;}
+.mt-unit{font-size:9px;margin-top:3px;color:rgba(255,255,255,.5);}
+.mt-cell.mr .mt-hr-label{color:#ffb3be;} .mt-cell.mr .mt-val{color:#ffb3be;}
+.mt-cell.mg .mt-hr-label{color:#86efcf;} .mt-cell.mg .mt-val{color:#86efcf;}
+.mt-cell.mn .mt-hr-label{color:#bfdbfe;} .mt-cell.mn .mt-val{color:#bfdbfe;}
+.mt-cell .mt-hr-desc{color:rgba(255,255,255,.4);}
+
+/* FOOTER */
 .footer{text-align:center;padding:20px 16px 10px;}
 .footer-in{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:11px;color:var(--muted);font-weight:600;}
 .fdot{width:5px;height:5px;background:var(--red);border-radius:50%;}
 
 #resultSection{display:none;}
 
+/* PRINT */
 @media print{
   body{background:#fff;padding:0;}
   .topbar,.input-card,.action-row,.footer,.mob-cards{display:none!important;}
@@ -182,9 +268,8 @@ tbody tr:hover td{background:#F8F9FB;}
       <span class="logo-text" style="display:none">SNOWTEX</span>
     </div>
     <div class="topbar-sep"></div>
-    <span class="topbar-sub">PIB Calculator</span>
+    <span class="topbar-sub">Layout PIB Calculator</span>
   </div>
-  <span class="topbar-badge">Sewing Line | Layout Period</span>
 </div>
 
 <div class="page">
@@ -250,19 +335,38 @@ tbody tr:hover td{background:#F8F9FB;}
 
     <div class="sum-grid">
       <div class="sum-card sc-r">
-        <div class="sum-left"><div class="sum-label">Hit Rate 70%</div><div class="sum-sub">Min Payout</div></div>
-        <div class="sum-right"><div class="sum-val" id="t70">--</div><div class="sum-note" id="s70">Total Taka</div></div>
+        <div class="sum-left">
+          <div class="sum-label">Hit Rate 70%</div>
+          <div class="sum-sub">Minimum Payout</div>
+        </div>
+        <div class="sum-right">
+          <div class="sum-val" id="t70">--</div>
+          <div class="sum-note" id="s70">Total Taka</div>
+        </div>
       </div>
       <div class="sum-card sc-g">
-        <div class="sum-left"><div class="sum-label">Hit Rate 100%</div><div class="sum-sub">Target Payout</div></div>
-        <div class="sum-right"><div class="sum-val" id="t100">--</div><div class="sum-note" id="s100">Total Taka</div></div>
+        <div class="sum-left">
+          <div class="sum-label">Hit Rate 100%</div>
+          <div class="sum-sub">Target Payout</div>
+        </div>
+        <div class="sum-right">
+          <div class="sum-val" id="t100">--</div>
+          <div class="sum-note" id="s100">Total Taka</div>
+        </div>
       </div>
       <div class="sum-card sc-n">
-        <div class="sum-left"><div class="sum-label">Hit Rate 120%</div><div class="sum-sub">Max Payout</div></div>
-        <div class="sum-right"><div class="sum-val" id="t120">--</div><div class="sum-note" id="s120">Total Taka</div></div>
+        <div class="sum-left">
+          <div class="sum-label">Hit Rate 120%</div>
+          <div class="sum-sub">Maximum Payout</div>
+        </div>
+        <div class="sum-right">
+          <div class="sum-val" id="t120">--</div>
+          <div class="sum-note" id="s120">Total Taka</div>
+        </div>
       </div>
     </div>
 
+    <!-- DESKTOP TABLE -->
     <div class="tbl-card">
       <div class="tbl-wrap">
         <table>
@@ -271,9 +375,9 @@ tbody tr:hover td{background:#F8F9FB;}
               <th>Day</th>
               <th>Line Target</th>
               <th>Operator Target</th>
-              <th class="th70">PIB @ 70%</th>
-              <th class="th100">PIB @ 100%</th>
-              <th class="th120">PIB @ 120%</th>
+              <th class="th70">PIB @ 70% Hit Rate</th>
+              <th class="th100">PIB @ 100% Hit Rate</th>
+              <th class="th120">PIB @ 120% Hit Rate</th>
             </tr>
           </thead>
           <tbody id="tBody"></tbody>
@@ -281,12 +385,13 @@ tbody tr:hover td{background:#F8F9FB;}
       </div>
     </div>
 
+    <!-- MOBILE CARDS -->
     <div class="mob-cards" id="mobCards"></div>
 
   </div>
 </div>
 
-<div class="footer"><div class="footer-in"><div class="fdot"></div>&copy; Snowtex CI Team<div class="fdot"></div></div></div>
+<div class="footer"><div class="footer-in">&copy; Snowtex CI Team</div></div>
 
 <script>
 var LCT=[[40.99,4,3],[65.99,5,4],[90.99,6,5],[1000,7,6]];
@@ -306,19 +411,19 @@ var NMT={
 };
 
 function getLC(smv){
-  for(var i=0;i<LCT.length;i++) if(smv<=LCT[i][0]) return {n:LCT[i][1],r:LCT[i][2]};
-  return {n:7,r:6};
+  for(var i=0;i<LCT.length;i++) if(smv<=LCT[i][0]) return{n:LCT[i][1],r:LCT[i][2]};
+  return{n:7,r:6};
 }
 function range(smv){
-  if(smv<=40.99) return '0-40.99';
-  if(smv<=65.99) return '41-65.99';
-  if(smv<=90.99) return '66-90.99';
-  return '91-1000';
+  if(smv<=40.99)return'0-40.99';
+  if(smv<=65.99)return'41-65.99';
+  if(smv<=90.99)return'66-90.99';
+  return'91-1000';
 }
 function pib(c){
-  if(c<25)c=25; if(c>75)c=75;
+  if(c<25)c=25;if(c>75)c=75;
   var p=20+(c-25)*0.6;
-  return {a70:+(p*0.7).toFixed(2), a100:+p.toFixed(2), a120:+(p*1.2).toFixed(2)};
+  return{a70:+(p*0.7).toFixed(2),a100:+p.toFixed(2),a120:+(p*1.2).toFixed(2)};
 }
 function $$(id){return document.getElementById(id);}
 
@@ -336,7 +441,7 @@ function onChg(){
   $$('pStyle').textContent=st==='new'?'New':'Repeat';
   $$('pMax').textContent='Max Eff: '+(bt==='special'?'65%':'75%');
   var pd=$$('pDays');
-  if(td>0&&td>days){pd.textContent='Total: '+td+' days (+' +(td-days)+' ext)';pd.style.display='inline-flex';}
+  if(td>0&&td>days){pd.textContent='Total: '+td+' days (+'+(td-days)+' ext)';pd.style.display='inline-flex';}
   else{pd.style.display='none';}
   $$('pills').style.display='flex';
 }
@@ -347,7 +452,6 @@ function generate(){
   var st=$$('styleType').value;
   var tdRaw=$$('totalDays').value;
   var td=tdRaw?parseInt(tdRaw):0;
-
   if(!smv||smv<=0){alert('Please enter a valid SMV.');return;}
   if(!bt){alert('Please select Buyer Type.');return;}
   if(!st){alert('Please select Style Type.');return;}
@@ -366,30 +470,32 @@ function generate(){
     var comb=(lt+10>75)?75:(lt+10);
     var isCap=(lt>=75);
     var v=pib(comb);
-    s70+=v.a70; s100+=v.a100; s120+=v.a120;
+    s70+=v.a70;s100+=v.a100;s120+=v.a120;
     rows.push({day:d,lt:lt,comb:comb,isCap:isCap,isExt:isExt,a70:v.a70,a100:v.a100,a120:v.a120});
   }
 
+  // Result bar - removed Ref and Policy
   $$('rTitle').textContent='SMV '+smv+' | '+(bt==='special'?'Special':'Normal')+' Buyer | '+(st==='new'?'New':'Repeat')+' Style';
   var meta='Learning Curve: '+lcDays+' Days';
-  if(hasExt) meta+=' | Total: '+showDays+' Days (LC '+lcDays+' + Ext '+(showDays-lcDays)+')';
-  meta+=' | SMV Range: '+range(smv)+' | Ref: '+(bt==='special'?'Table 02':'Table 03')+' | Policy: 27 Apr 2026';
+  if(hasExt) meta+=' | Total: '+showDays+' Days (LC '+lcDays+' + Extended '+(showDays-lcDays)+')';
+  meta+=' | SMV Range: '+range(smv);
   $$('rMeta').textContent=meta;
 
-  $$('note').innerHTML='<strong>PIB Rule:</strong> Hit Rate 70% min to 120% max. Op. Target = Line Target + 10% (max 75%). '+'<strong>PIB(100%) = 20 + (Op.Target% - 25) x 0.60 tk</strong>'+(hasExt?' | Extended days use max eff '+maxLT+'%.':'');
+  $$('note').innerHTML='<strong>PIB Rule:</strong> Hit Rate 70% minimum to 120% maximum. Operator Target = Line Target + 10% (max 75%). <strong>PIB at 100% = 20 + (Operator Target % - 25) x 0.60 tk</strong>'+(hasExt?' | Extended days repeat max efficiency of '+maxLT+'%.':'');
 
   var sub='Total Taka ('+showDays+' Days)';
   $$('t70').textContent=s70.toFixed(2)+' tk';
   $$('t100').textContent=s100.toFixed(2)+' tk';
   $$('t120').textContent=s120.toFixed(2)+' tk';
-  $$('s70').textContent=sub; $$('s100').textContent=sub; $$('s120').textContent=sub;
+  $$('s70').textContent=sub;$$('s100').textContent=sub;$$('s120').textContent=sub;
 
+  // Desktop table
   var tbody=$$('tBody');
   tbody.innerHTML='';
   for(var i=0;i<rows.length;i++){
     var r=rows[i];
-    var eLabel=r.isCap?(r.lt+'% <span class="cbadge">CAP</span>'):(r.lt+'%+10%='+r.comb+'%');
-    if(r.isExt) eLabel+=' <span class="xbadge">EXT</span>';
+    var eLabel=r.isCap?(r.lt+'% <span class="cbadge">CAPPED</span>'):(r.lt+'% + 10% = '+r.comb+'%');
+    if(r.isExt)eLabel+=' <span class="xbadge">EXTENDED</span>';
     var tr=document.createElement('tr');
     tr.innerHTML='<td><span class="dbadge'+(r.isExt?' ext':'')+'">'+r.day+'</span></td>'+
       '<td>'+r.lt+'%</td>'+
@@ -401,47 +507,99 @@ function generate(){
   }
   var ttr=document.createElement('tr');
   ttr.className='tot-row';
-  var totalLabel='TOTAL ('+showDays+' DAYS'+(hasExt?' | LC '+lcDays+' + EXT '+(showDays-lcDays):'')+')';
-  ttr.innerHTML='<td colspan="3">'+totalLabel+'</td>'+
+  ttr.innerHTML='<td colspan="3">TOTAL ('+showDays+' DAYS'+(hasExt?' | LC '+lcDays+' + EXT '+(showDays-lcDays):'')+') </td>'+
     '<td class="p70">'+s70.toFixed(2)+' tk</td>'+
     '<td class="p100">'+s100.toFixed(2)+' tk</td>'+
     '<td class="p120">'+s120.toFixed(2)+' tk</td>';
   tbody.appendChild(ttr);
 
+  // Mobile cards - redesigned
   var mc=$$('mobCards');
   mc.innerHTML='';
   for(var j=0;j<rows.length;j++){
     var r=rows[j];
-    var eL=r.isCap?(r.lt+'% <span class="cbadge">CAP</span>'):(r.lt+'% + 10% = '+r.comb+'%');
-    if(r.isExt) eL+=' <span class="xbadge">EXT</span>';
+    var cardClass='dc'+(r.isExt?' is-ext':'')+(r.isCap?' is-cap':'');
+    var badgeClass='dc-daynum'+(r.isExt?' ext':'');
+    var statusBadges='';
+    if(r.isCap) statusBadges+='<span class="dc-badge-cap">Max Efficiency Reached</span>';
+    if(r.isExt) statusBadges+='<span class="dc-badge-ext">Extended Day</span>';
+
+    var opTargetText=r.isCap
+      ? r.lt+'% (no +10, already at max 75%)'
+      : r.lt+'% Line + 10% = '+r.comb+'% Operator Target';
+
     var div=document.createElement('div');
-    div.className='dc';
+    div.className=cardClass;
     div.innerHTML=
-      '<div class="dc-head">'+
-        '<div class="dc-left">'+
-          '<span class="dc-badge'+(r.isExt?' ext':'')+'">'+r.day+'</span>'+
-          '<div><div class="dc-name">Day '+r.day+(r.isExt?' <span class="xbadge">EXT</span>':'')+'</div>'+
-          '<div class="dc-eff">'+eL+'</div></div>'+
+      '<div class="dc-top">'+
+        '<div class="dc-top-left">'+
+          '<div class="'+badgeClass+'">'+r.day+'</div>'+
+          '<div>'+
+            '<div class="dc-daylabel">Day '+r.day+'</div>'+
+            '<div class="dc-daystatus">'+statusBadges+'</div>'+
+          '</div>'+
         '</div>'+
-        '<div class="dc-lt">Line: '+r.lt+'%</div>'+
       '</div>'+
-      '<div class="dc-body">'+
-        '<div class="pc r70"><div class="pc-rate">70%</div><div class="pc-amt">'+r.a70.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
-        '<div class="pc r100"><div class="pc-rate">100%</div><div class="pc-amt">'+r.a100.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
-        '<div class="pc r120"><div class="pc-rate">120%</div><div class="pc-amt">'+r.a120.toFixed(2)+'</div><div class="pc-unit">tk</div></div>'+
+      '<div class="dc-eff-row">'+
+        '<div class="dc-eff-item">'+
+          '<div class="dc-eff-label">Line Target</div>'+
+          '<div class="dc-eff-val">'+r.lt+'%</div>'+
+        '</div>'+
+        '<div class="dc-eff-item">'+
+          '<div class="dc-eff-label">Operator Target</div>'+
+          '<div class="dc-eff-val purple">'+r.comb+'%</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="dc-pib-grid">'+
+        '<div class="dc-pib-cell cell-70">'+
+          '<div class="dc-pib-hr-label">70% Hit</div>'+
+          '<div class="dc-pib-hr-desc">Min payout</div>'+
+          '<div class="dc-pib-amount">'+r.a70.toFixed(2)+'</div>'+
+          '<div class="dc-pib-unit">Taka</div>'+
+        '</div>'+
+        '<div class="dc-pib-cell cell-100">'+
+          '<div class="dc-pib-hr-label">100% Hit</div>'+
+          '<div class="dc-pib-hr-desc">Target payout</div>'+
+          '<div class="dc-pib-amount">'+r.a100.toFixed(2)+'</div>'+
+          '<div class="dc-pib-unit">Taka</div>'+
+        '</div>'+
+        '<div class="dc-pib-cell cell-120">'+
+          '<div class="dc-pib-hr-label">120% Hit</div>'+
+          '<div class="dc-pib-hr-desc">Max payout</div>'+
+          '<div class="dc-pib-amount">'+r.a120.toFixed(2)+'</div>'+
+          '<div class="dc-pib-unit">Taka</div>'+
+        '</div>'+
       '</div>';
     mc.appendChild(div);
   }
 
+  // Mobile total card
   var totDiv=document.createElement('div');
   totDiv.className='mob-total';
-  var totLbl='TOTAL | '+showDays+' Days'+(hasExt?' (LC '+lcDays+' + EXT '+(showDays-lcDays)+')':'');
   totDiv.innerHTML=
-    '<div class="mt-label">'+totLbl+'</div>'+
+    '<div class="mt-head">'+
+      '<div class="mt-title">Grand Total</div>'+
+      '<div class="mt-days-badge">'+showDays+' Days'+(hasExt?' (LC '+lcDays+' + Ext '+(showDays-lcDays)+')':'')+'</div>'+
+    '</div>'+
     '<div class="mt-grid">'+
-      '<div class="mt-item mr"><div class="mt-rate">70%</div><div class="mt-val">'+s70.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
-      '<div class="mt-item mg"><div class="mt-rate">100%</div><div class="mt-val">'+s100.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
-      '<div class="mt-item mn"><div class="mt-rate">120%</div><div class="mt-val">'+s120.toFixed(2)+'</div><div class="mt-unit">tk</div></div>'+
+      '<div class="mt-cell mr">'+
+        '<div class="mt-hr-label">70% Hit</div>'+
+        '<div class="mt-hr-desc">Min payout</div>'+
+        '<div class="mt-val">'+s70.toFixed(2)+'</div>'+
+        '<div class="mt-unit">Taka</div>'+
+      '</div>'+
+      '<div class="mt-cell mg">'+
+        '<div class="mt-hr-label">100% Hit</div>'+
+        '<div class="mt-hr-desc">Target</div>'+
+        '<div class="mt-val">'+s100.toFixed(2)+'</div>'+
+        '<div class="mt-unit">Taka</div>'+
+      '</div>'+
+      '<div class="mt-cell mn">'+
+        '<div class="mt-hr-label">120% Hit</div>'+
+        '<div class="mt-hr-desc">Max payout</div>'+
+        '<div class="mt-val">'+s120.toFixed(2)+'</div>'+
+        '<div class="mt-unit">Taka</div>'+
+      '</div>'+
     '</div>';
   mc.appendChild(totDiv);
 
@@ -458,23 +616,16 @@ function reset(){
 
 function dlPDF(){
   var btn=$$('pdfBtn');
-  btn.textContent='Generating...';
-  btn.disabled=true;
-
+  btn.textContent='Generating...';btn.disabled=true;
   var actionRow=document.querySelector('.action-row');
   var inputSec=$$('inputSection');
   var footer=document.querySelector('.footer');
   var topbar=document.querySelector('.topbar');
   var tblCard=document.querySelector('.tbl-card');
   var mobCards=$$('mobCards');
-
-  actionRow.style.display='none';
-  inputSec.style.display='none';
-  footer.style.display='none';
-  topbar.style.display='none';
-  tblCard.style.display='block';
-  mobCards.style.display='none';
-
+  actionRow.style.display='none';inputSec.style.display='none';
+  footer.style.display='none';topbar.style.display='none';
+  tblCard.style.display='block';mobCards.style.display='none';
   var st=document.createElement('style');
   st.textContent=[
     'body{background:#fff!important;}',
@@ -490,17 +641,12 @@ function dlPDF(){
     '.result-bar{background:#1B2A47!important;}'
   ].join('');
   document.head.appendChild(st);
-
   var sec=$$('resultSection');
   html2canvas(sec,{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:960}).then(function(canvas){
     document.head.removeChild(st);
-    actionRow.style.display='flex';
-    inputSec.style.display='block';
-    footer.style.display='block';
-    topbar.style.display='flex';
-    tblCard.style.display='';
-    mobCards.style.display='';
-
+    actionRow.style.display='flex';inputSec.style.display='block';
+    footer.style.display='block';topbar.style.display='flex';
+    tblCard.style.display='';mobCards.style.display='';
     var img=canvas.toDataURL('image/png');
     var pdf=new jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     var pW=210,pH=297,mg=10,uw=pW-mg*2;
@@ -509,19 +655,16 @@ function dlPDF(){
     if(sh>pH-mg*2){rat=(pH-mg*2)/(canvas.height*0.264583);var sw=canvas.width*0.264583*rat;pdf.addImage(img,'PNG',(pW-sw)/2,mg,sw,pH-mg*2);}
     else{pdf.addImage(img,'PNG',mg,mg,uw,sh);}
     pdf.setFontSize(7);pdf.setTextColor(130);
-    pdf.text('SNOWTEX GROUP | PIB Calculator | Policy: 27 April 2026 | (c) Snowtex CI Team',mg,pH-4);
+    pdf.text('SNOWTEX GROUP | Layout PIB Calculator | (c) Snowtex CI Team',mg,pH-4);
     pdf.text('Generated: '+new Date().toLocaleString(),pW-mg,pH-4,{align:'right'});
-    pdf.save('PIB_Report_SNOWTEX.pdf');
+    pdf.save('Layout_PIB_Report_SNOWTEX.pdf');
     btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h4a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Download PDF';
     btn.disabled=false;
-  }).catch(function(e){
+  }).catch(function(){
     document.head.removeChild(st);
-    actionRow.style.display='flex';
-    inputSec.style.display='block';
-    footer.style.display='block';
-    topbar.style.display='flex';
-    tblCard.style.display='';
-    mobCards.style.display='';
+    actionRow.style.display='flex';inputSec.style.display='block';
+    footer.style.display='block';topbar.style.display='flex';
+    tblCard.style.display='';mobCards.style.display='';
     btn.textContent='Download PDF';btn.disabled=false;
   });
 }
