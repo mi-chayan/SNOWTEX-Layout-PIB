@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Layout PIB Calculator | SNOWTEX Group</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -95,7 +95,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 }
 .sum-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;}
 .sum-sub{font-size:11px;font-weight:600;margin-bottom:4px;}
-.sum-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;line-height:1;}
+.sum-val{font-family:'Roboto Mono',monospace;font-size:26px;font-weight:700;line-height:1;}
 .sum-note{font-size:9px;color:var(--muted);margin-top:4px;}
 .sc-r .sum-val,.sc-r .sum-sub{color:var(--red);}
 .sc-g .sum-val,.sc-g .sum-sub{color:var(--green);}
@@ -114,10 +114,10 @@ tbody tr:last-child td{border-bottom:none;}
 tbody tr:hover td{background:#F8F9FB;}
 .dbadge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;background:#EEF1F7;color:var(--navy);font-size:12px;font-weight:800;border:1px solid #C5CFDF;}
 .dbadge.ext{background:var(--green-light);color:var(--green);border-color:#B3DCCB;}
-.ecell{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6d28d9;}
-.p70{color:var(--red);font-family:'JetBrains Mono',monospace;}
-.p100{color:var(--green);font-family:'JetBrains Mono',monospace;}
-.p120{color:var(--navy);font-family:'JetBrains Mono',monospace;font-weight:700;}
+.ecell{font-family:'Roboto Mono',monospace;font-size:11px;color:#6d28d9;}
+.p70{color:var(--red);font-family:'Roboto Mono',monospace;}
+.p100{color:var(--green);font-family:'Roboto Mono',monospace;}
+.p120{color:var(--navy);font-family:'Roboto Mono',monospace;font-weight:700;}
 .th70{color:#ffb3be!important;}
 .th100{color:#86efcf!important;}
 .th120{color:#bfcfff!important;}
@@ -172,7 +172,7 @@ tbody tr:hover td{background:#F8F9FB;}
 }
 .dc-eff-item{}
 .dc-eff-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:3px;}
-.dc-eff-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--navy);}
+.dc-eff-val{font-family:'Roboto Mono',monospace;font-size:13px;font-weight:700;color:var(--navy);}
 .dc-eff-val.purple{color:#6d28d9;}
 
 /* PIB amounts - 3 equal columns */
@@ -194,7 +194,7 @@ tbody tr:hover td{background:#F8F9FB;}
   font-size:8px;color:var(--muted);margin-bottom:8px;font-weight:500;
 }
 .dc-pib-amount{
-  font-family:'JetBrains Mono',monospace;
+  font-family:'Roboto Mono',monospace;
   font-size:20px;font-weight:800;line-height:1;
 }
 .dc-pib-unit{font-size:9px;color:var(--muted);margin-top:3px;font-weight:500;}
@@ -225,7 +225,7 @@ tbody tr:hover td{background:#F8F9FB;}
 .mt-cell:nth-child(2){margin:0 4px;}
 .mt-hr-label{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
 .mt-hr-desc{font-size:8px;margin-bottom:8px;}
-.mt-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;line-height:1;}
+.mt-val{font-family:'Roboto Mono',monospace;font-size:20px;font-weight:800;line-height:1;}
 .mt-unit{font-size:9px;margin-top:3px;color:rgba(255,255,255,.5);}
 .mt-cell.mr .mt-hr-label{color:#ffb3be;} .mt-cell.mr .mt-val{color:#ffb3be;}
 .mt-cell.mg .mt-hr-label{color:#86efcf;} .mt-cell.mg .mt-val{color:#86efcf;}
@@ -394,6 +394,7 @@ tbody tr:hover td{background:#F8F9FB;}
 <div class="footer"><div class="footer-in">&copy; Snowtex CI Team</div></div>
 
 <script>
+function fmt(n){var s=parseFloat(n.toFixed(2));return s%1===0?s.toString():s.toString();}
 var LCT=[[40.99,4,3],[65.99,5,4],[90.99,6,5],[1000,7,6]];
 var SPT={
   3:[30,60,65,65,65,65,65,65,65,65],
@@ -469,7 +470,7 @@ function generate(){
     var isExt=(d>lcDays);
     var maxCap=(bt==='special')?65:75;
     var comb=(lt+10>maxCap)?maxCap:(lt+10);
-    var isCap=(comb>=maxCap);
+    var isCap=(lt+10>maxCap);
     var v=pib(comb);
     s70+=v.a70;s100+=v.a100;s120+=v.a120;
     rows.push({day:d,lt:lt,comb:comb,isCap:isCap,isExt:isExt,a70:v.a70,a100:v.a100,a120:v.a120});
@@ -485,9 +486,9 @@ function generate(){
   $$('note').innerHTML='<strong>PIB Rule:</strong> Hit Rate 70% minimum to 120% maximum. Operator Target = Line Target + 10% (max 75%). <strong>PIB at 100% = 20 + (Operator Target % - 25) x 0.60 tk</strong>'+(hasExt?' | Extended days repeat max efficiency of '+maxLT+'%.':'');
 
   var sub='Total Taka ('+showDays+' Days)';
-  $$('t70').textContent=s70.toFixed(2)+' tk';
-  $$('t100').textContent=s100.toFixed(2)+' tk';
-  $$('t120').textContent=s120.toFixed(2)+' tk';
+  $$('t70').textContent=fmt(s70)+' tk';
+  $$('t100').textContent=fmt(s100)+' tk';
+  $$('t120').textContent=fmt(s120)+' tk';
   $$('s70').textContent=sub;$$('s100').textContent=sub;$$('s120').textContent=sub;
 
   // Desktop table
@@ -495,23 +496,23 @@ function generate(){
   tbody.innerHTML='';
   for(var i=0;i<rows.length;i++){
     var r=rows[i];
-    var eLabel=r.isCap?(r.lt+'% <span class="cbadge">CAPPED</span>'):(r.lt+'% + 10% = '+r.comb+'%');
+    var eLabel=r.isCap?(r.comb+'% <span class="cbadge">CAPPED</span>'):(r.lt+'% + 10% = '+r.comb+'%');
     if(r.isExt)eLabel+=' <span class="xbadge">EXTENDED</span>';
     var tr=document.createElement('tr');
     tr.innerHTML='<td><span class="dbadge'+(r.isExt?' ext':'')+'">'+r.day+'</span></td>'+
       '<td>'+r.lt+'%</td>'+
       '<td class="ecell">'+eLabel+'</td>'+
-      '<td class="p70">'+r.a70.toFixed(2)+' tk</td>'+
-      '<td class="p100">'+r.a100.toFixed(2)+' tk</td>'+
-      '<td class="p120">'+r.a120.toFixed(2)+' tk</td>';
+      '<td class="p70">'+fmt(r.a70)+' tk</td>'+
+      '<td class="p100">'+fmt(r.a100)+' tk</td>'+
+      '<td class="p120">'+fmt(r.a120)+' tk</td>';
     tbody.appendChild(tr);
   }
   var ttr=document.createElement('tr');
   ttr.className='tot-row';
   ttr.innerHTML='<td colspan="3">TOTAL ('+showDays+' DAYS'+(hasExt?' | LC '+lcDays+' + EXT '+(showDays-lcDays):'')+') </td>'+
-    '<td class="p70">'+s70.toFixed(2)+' tk</td>'+
-    '<td class="p100">'+s100.toFixed(2)+' tk</td>'+
-    '<td class="p120">'+s120.toFixed(2)+' tk</td>';
+    '<td class="p70">'+fmt(s70)+' tk</td>'+
+    '<td class="p100">'+fmt(s100)+' tk</td>'+
+    '<td class="p120">'+fmt(s120)+' tk</td>';
   tbody.appendChild(ttr);
 
   // Mobile cards - redesigned
@@ -526,7 +527,7 @@ function generate(){
     if(r.isExt) statusBadges+='<span class="dc-badge-ext">Extended Day</span>';
 
     var opTargetText=r.isCap
-      ? r.lt+'% (no +10, already at max 75%)'
+      ? r.lt+'% + 10% = '+r.comb+'% (max cap)'
       : r.lt+'% Line + 10% = '+r.comb+'% Operator Target';
 
     var div=document.createElement('div');
@@ -555,19 +556,19 @@ function generate(){
         '<div class="dc-pib-cell cell-70">'+
           '<div class="dc-pib-hr-label">70% Hit</div>'+
           '<div class="dc-pib-hr-desc">Min payout</div>'+
-          '<div class="dc-pib-amount">'+r.a70.toFixed(2)+'</div>'+
+          '<div class="dc-pib-amount">'+fmt(r.a70)+'</div>'+
           '<div class="dc-pib-unit">Taka</div>'+
         '</div>'+
         '<div class="dc-pib-cell cell-100">'+
           '<div class="dc-pib-hr-label">100% Hit</div>'+
           '<div class="dc-pib-hr-desc">Target payout</div>'+
-          '<div class="dc-pib-amount">'+r.a100.toFixed(2)+'</div>'+
+          '<div class="dc-pib-amount">'+fmt(r.a100)+'</div>'+
           '<div class="dc-pib-unit">Taka</div>'+
         '</div>'+
         '<div class="dc-pib-cell cell-120">'+
           '<div class="dc-pib-hr-label">120% Hit</div>'+
           '<div class="dc-pib-hr-desc">Max payout</div>'+
-          '<div class="dc-pib-amount">'+r.a120.toFixed(2)+'</div>'+
+          '<div class="dc-pib-amount">'+fmt(r.a120)+'</div>'+
           '<div class="dc-pib-unit">Taka</div>'+
         '</div>'+
       '</div>';
@@ -586,19 +587,19 @@ function generate(){
       '<div class="mt-cell mr">'+
         '<div class="mt-hr-label">70% Hit</div>'+
         '<div class="mt-hr-desc">Min payout</div>'+
-        '<div class="mt-val">'+s70.toFixed(2)+'</div>'+
+        '<div class="mt-val">'+fmt(s70)+'</div>'+
         '<div class="mt-unit">Taka</div>'+
       '</div>'+
       '<div class="mt-cell mg">'+
         '<div class="mt-hr-label">100% Hit</div>'+
         '<div class="mt-hr-desc">Target</div>'+
-        '<div class="mt-val">'+s100.toFixed(2)+'</div>'+
+        '<div class="mt-val">'+fmt(s100)+'</div>'+
         '<div class="mt-unit">Taka</div>'+
       '</div>'+
       '<div class="mt-cell mn">'+
         '<div class="mt-hr-label">120% Hit</div>'+
         '<div class="mt-hr-desc">Max payout</div>'+
-        '<div class="mt-val">'+s120.toFixed(2)+'</div>'+
+        '<div class="mt-val">'+fmt(s120)+'</div>'+
         '<div class="mt-unit">Taka</div>'+
       '</div>'+
     '</div>';
